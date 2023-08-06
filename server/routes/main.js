@@ -13,8 +13,10 @@ router.get('/profile', controllers.profileGET);
 router.get('/create_post', controllers.create_postGET);
 router.post('/create_post', controllers.create_postPOST);
 router.get('/post/:id', controllers.postGET);
-router.get('/edit_post/:id', controllers.editGET)
+router.get('/edit_post/:id', controllers.editGET);
 router.put('/edit_post/:id', controllers.editPUT);
+router.get('/about', controllers.aboutGET);
+router.get('/contact', controllers.contactGET);
 // router.get('/posts/new', createPost);
 // router.post('/posts/store', storePost)
 // router.get('', async (req, res) => {
@@ -50,18 +52,6 @@ router.put('/edit_post/:id', controllers.editPUT);
 //   }
 
 // });
-
-// GET method, about page
-router.get('/about', (req, res) => {
-  res.render('about', {
-    currentRoute: `/about`
-  });
-});
-
-// GET method, contact page
-router.get('/contact', (req, res) => {
-  res.render('contact');
-});
 
 // GET method, post:id
 router.get('/post/:id', async (req, res) => {

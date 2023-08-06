@@ -1,21 +1,21 @@
 <section class="hero grid">
-  <div class="top_row left_col">
-    <h1>Console.Blog</h1>
+  <div class="top_row left_col flex_column">
+    <div class="title">
+      <h1>Console.<span>B</span>log</h1>
+    </div>
     <p>Blog for Developers</p>
   </div>
-  <div class="bottom_row right_col">
+  <div class="bottom_row right_col flex_row">
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit, ipsum!</p>
   </div>
 </section>
-<section>
-  <div>
-    <% articles.forEach(element => { %>
-      <a href="<%= element.url %>">
-        <h3>s<%= element.name%><h3>
-        <img src="<%= element.provider[0].image.thumbnail.contentUrl %>" alt="">
-      </a>
-    <% }) %>
-  </div>
+<section class="news_feed grid">
+  <% articles.forEach(element => { %>
+      <div class="article flex_row">
+        <a href="<%= element.url %>"><p><%= element.name%><p></a>
+        <img src="<%= element.provider[0].image.thumbnail.contentUrl %>" alt="<%= element.name%>">
+      </div>
+  <% }) %>
 </section>
 <section class="latest">
   <div>
@@ -26,7 +26,8 @@
     <% }) %>
   </div>
 </section>
-<section class="todays_method">
-  <h4><%= method %></h4>
+<section class="todays_method flex_column">
+  <h4>Today's one line trick</h4>
+  <h5><%= method %></h5>
 </section>
 

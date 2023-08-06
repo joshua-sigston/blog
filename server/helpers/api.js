@@ -13,7 +13,7 @@ const newsAPI = async () => {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
-    result.value.forEach( item => articles.push(item))
+    await result.value.forEach( item => articles.push(item))
   } catch (error) {
     console.error(error);
   }

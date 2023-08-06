@@ -16,11 +16,28 @@ exports.homepage = async (req, res) => {
   const data = auth.isLoggedIn(req, res);
   // gets news articles to display news articles on homepage
   const articles = await api.newsAPI();
+  // console.log(articles[0].provider[0].image.thumbnail.contentUrl)
   // get latests posts to display on homepage
   const posts = await Post.find().sort({createdAt: -1}).limit(6);
 
   res.render('home', {data, articles, posts, method})
 };
+
+// GET - get about page
+exports.aboutGET = (req, res) => {
+  // functionality to display weather or not user is logged in for header
+  const data = auth.isLoggedIn(req, res)
+
+  res.render('about', {data})
+}
+
+// GET - get about page
+exports.contactGET = (req, res) => {
+  // functionality to display weather or not user is logged in for header
+  const data = auth.isLoggedIn(req, res)
+
+  res.render('contact', {data})
+}
 
 // GET - get register page
 exports.registerGET = (req, res) => {
@@ -118,6 +135,7 @@ exports.profileGET = async (req,res) => {
     const posts = await Post.find();
     const userPosts = posts.filter(post => post.author === data.id)
     const user = await User.findById({ _id: data.id });
+    console.log(user)
     
     res.render('profile', {data, user, userPosts})
   };
@@ -223,3 +241,104 @@ exports.editPUT = async (req, res) => {
       console.log(error);
     }
 }
+
+// const articles = [
+//   {
+//     type:"NewsArticle",
+//     name:"Why 20 Percent of Web Developers Are Wary Of Using AI",
+//     url:"https://www.benzinga.com/pressreleases/23/08/33586174/why-20-percent-of-web-developers-are-wary-of-using-ai",
+//     description:"It is estimated that 20 percent of web developers are not using AI for website design tasks and related assignments. Are you among these web developers? Many people still prefer",
+//     provider:
+//     [
+//       {
+//         _type:"Organization",
+//       name:"Benzinga.com",
+//       image:
+//         {
+//           _type:"ImageObject",
+//           thumbnail:
+//           {
+//             _type:"ImageObject",
+//           contentUrl:"https://www.bing.com/th?id=ODF.LnWAsYULk4XKw3udkffflQ&pid=news"
+//           }
+//         }
+//       }
+//     ],
+//     datePublished:"2023-08-05T05:26:00.0000000Z",
+//     category:"ScienceAndTechnology"
+//   },
+//   {
+//     type:"NewsArticle",
+//     name:"Why 20 Percent of Web Developers Are Wary Of Using AI",
+//     url:"https://www.benzinga.com/pressreleases/23/08/33586174/why-20-percent-of-web-developers-are-wary-of-using-ai",
+//     description:"It is estimated that 20 percent of web developers are not using AI for website design tasks and related assignments. Are you among these web developers? Many people still prefer",
+//     provider:
+//     [
+//       {
+//         _type:"Organization",
+//       name:"Benzinga.com",
+//       image:
+//         {
+//           _type:"ImageObject",
+//           thumbnail:
+//           {
+//             _type:"ImageObject",
+//           contentUrl:"https://www.bing.com/th?id=ODF.LnWAsYULk4XKw3udkffflQ&pid=news"
+//           }
+//         }
+//       }
+//     ],
+//     datePublished:"2023-08-05T05:26:00.0000000Z",
+//     category:"ScienceAndTechnology"
+//   },
+//   {
+//     type:"NewsArticle",
+//     name:"Why 20 Percent of Web Developers Are Wary Of Using AI",
+//     url:"https://www.benzinga.com/pressreleases/23/08/33586174/why-20-percent-of-web-developers-are-wary-of-using-ai",
+//     description:"It is estimated that 20 percent of web developers are not using AI for website design tasks and related assignments. Are you among these web developers? Many people still prefer",
+//     provider:
+//     [
+//       {
+//         _type:"Organization",
+//       name:"Benzinga.com",
+//       image:
+//         {
+//           _type:"ImageObject",
+//           thumbnail:
+//           {
+//             _type:"ImageObject",
+//           contentUrl:"https://www.bing.com/th?id=ODF.LnWAsYULk4XKw3udkffflQ&pid=news"
+//           }
+//         }
+//       }
+//     ],
+//     datePublished:"2023-08-05T05:26:00.0000000Z",
+//     category:"ScienceAndTechnology"
+//   },
+//   {
+//     type:"NewsArticle",
+//     name:"Why 20 Percent of Web Developers Are Wary Of Using AI",
+//     url:"https://www.benzinga.com/pressreleases/23/08/33586174/why-20-percent-of-web-developers-are-wary-of-using-ai",
+//     description:"It is estimated that 20 percent of web developers are not using AI for website design tasks and related assignments. Are you among these web developers? Many people still prefer",
+//     provider:
+//     [
+//       {
+//         _type:"Organization",
+//       name:"Benzinga.com",
+//       image:
+//         {
+//           _type:"ImageObject",
+//           thumbnail:
+//           {
+//             _type:"ImageObject",
+//           contentUrl:"https://www.bing.com/th?id=ODF.LnWAsYULk4XKw3udkffflQ&pid=news"
+//           }
+//         }
+//       }
+//     ],
+//     datePublished:"2023-08-05T05:26:00.0000000Z",
+//     category:"ScienceAndTechnology"
+//   },
+  
+  
+// ]
