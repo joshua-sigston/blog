@@ -1,0 +1,12 @@
+<h1>Register</h1>
+<form action="/register" method="POST" enctype="multipart/form-data">
+  <input type="text" name="username" placeholder="Enter Username">
+  <input type="email" name="email" placeholder="Enter email">
+  <input type="password" name="password" placeholder="Enter Password">
+  <div>
+    <label for="upload-image">Upload Image
+        <input type="file" name="uploadImage" id="upload-image" accept="image/*" multiple>
+    </label>
+  </div>
+  <button>Register</button>
+</form>

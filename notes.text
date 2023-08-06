@@ -1,0 +1,30 @@
+dependencies
+npm i bcrypt 
+      connect-mongo 
+      cookie-parser 
+      dotenv 
+      ejs 
+      express 
+      express-ejs-layouts 
+      express-session 
+      jsonwebtoken 
+      method-override 
+      mongoose 
+      npm i nodemon --save-dev
+
+<section class="latest_posts">
+  <h2>Latest Posts</h2>
+  <ul class="post_list"></ul>
+    <% data.forEach(post => { %>
+      <li>
+        <a href="/post/<%= post._id %>" class="flex_row">
+          <h3><%= post.title %></h3>
+          <span><%= post.createdAt.toDateString() %></span>
+        </a>
+      </li>
+    <% }) %>
+  </ul>
+  <% if (nextPage !== null) { %>
+    <a href="/?page=<%= nextPage %>">view older posts</a>
+  <% } %>
+</section>
