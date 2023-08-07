@@ -1,21 +1,18 @@
-<a href="/profile">&larr; Back</a>
-<div class="admin-title">
-  <h2>View / Edit Post</h2>
+<section class="edit_container grid">
+  <a href="/profile" class="back">&larr; Back</a>
 
-  <form action="/delete_post/<%= data._id %>?_method=DELETE" method="POST">
-    <input type="submit" value="Delete" class="btn-delete btn">
+  <form action="/edit_post/<%= post._id %>?_method=PUT" method="POST" class="grid">
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Post Title" name="title" value="<%= post.title %>">
+
+    <label for="body"><b>Content</b></label>
+    <textarea name="body" cols="30" rows="10"><%= post.body %></textarea>
+
+    <input type="submit" value="Update" class="update">
+    <form action="/delete_post/<%= data._id %>?_method=DELETE" method="POST">
+      <input type="submit" value="Delete" class="delete">
+    </form>
+
   </form>
-
-</div>
-
-<form action="/edit_post/<%= post._id %>?_method=PUT" method="POST">
-
-  <label for="title"><b>Title</b></label>
-  <input type="text" placeholder="Post Title" name="title" value="<%= post.title %>">
-
-  <label for="body"><b>Content</b></label>
-  <textarea name="body" cols="50" rows="10"><%= post.body %></textarea>
-
-  <input type="submit" value="Update" class="btn">
-
-</form>
+</section>

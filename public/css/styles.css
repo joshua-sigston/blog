@@ -312,10 +312,12 @@ footer {
 }
 
 /* profile - profile page */
-.profile,
-.user_posts {
-  gap: 1em;
+.profile {
+  min-height: 90vh;
+  place-content: center;
 }
+
+.user_posts, 
 .user_info {
   gap: 1em;
 }
@@ -325,9 +327,13 @@ footer {
   border-radius: .3rem;
 }
 
-/* register/login page */
-.register, .login {
+/* register/login/create/edit page - all forms*/
+.register, 
+.login,
+.create,
+.edit_container {
   min-height: 90vh;
+  justify-items: center;
 }
 
 .register h1,
@@ -337,13 +343,17 @@ footer {
   align-self: center;
 }
 
-form {
+.register form ,
+.login form,
+.create form,
+.edit_container form {
   padding: 1em;
   gap: 1em;
   background-color: var(--clr-white-three);
   border-radius: .5rem;
   box-shadow: var(--box-shadow-sketch);
   margin-bottom: 2em;
+  max-width: 30rem;
 }
 
 .login form {
@@ -353,29 +363,32 @@ form {
 form input {
   width: 80%;
   padding-inline: .3em;
-  background-color: var(--clr-white-two);
-}
-
-form input:focus {
-  background-color: var(--clr-white-one);
+  background-color: rgba(212, 203, 229, 0.4);
 }
 
 form input,
-form button {
+form button,
+.btn {
   border-radius: .3rem;
   border: none;
   outline: none;
 }
 
-form button {
+textarea {
+  resize:vertical;
+}
+
+form button,
+.btn {
   font-family: var(--ff-sub-title);
-  max-width: 50%;
+  max-width: 10rem;
   box-shadow: var(--box-shadow-stripe);
   transition: var(--transition);
   background-color: var(--clr-purple);
 }
 
-form button:active {
+form button:active,
+.btn:active {
   box-shadow: var(--box-shadow-active);
 }
 
@@ -388,6 +401,34 @@ form button:active {
 }
 .upload_img span {
   font-size: small;
+}
+
+.btns_container {
+  align-items: center;
+  gap: 1em;
+}
+
+.edit,
+.delete,
+.update {
+  font-family: var(--ff-sub-title);
+  font-size: 1rem;
+  padding: .3em .5em;
+  border: none;
+  border-radius: .5rem;
+  box-shadow: var(--box-shadow-stripe);
+}
+
+.edit {
+  background-color: var(--clr-blue);
+}
+
+.delete {
+  background-color: var(--clr-red);
+}
+
+.update {
+  background-color: var(--clr-purple);
 }
 
 /* about page, contact page */
@@ -420,6 +461,11 @@ form button:active {
 .contact a {
   font-size: 1rem;
   color: var(--clr-white-three);
+}
+
+/* create page */
+.back {
+  justify-self: flex-start;
 }
 
 @media screen and (min-width: 600px) {
@@ -472,12 +518,34 @@ form button:active {
     justify-content: center;
     align-items: center;
   }
+
+  .news_feed {
+    justify-items: center;
+  }
+
+  .article {
+    max-width: 80%;
+  }
+
+  .article a,
+  .article img {
+    flex: 1;
+  }
+
 /* profile */
   .profile {
     grid-template-columns: 1fr 1fr;
   }
 
   .profile img {
-    max-width: 20rem;
+    max-width: 15rem;
+    height: 20rem;
   }
+}
+
+@media screen and (min-width: 900px) {
+  section, header {
+    padding-inline: 3em;
+  }
+  
 }

@@ -1,4 +1,3 @@
-const { cachedDataVersionTag } = require('v8');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
@@ -15,8 +14,18 @@ exports.homepage = async (req, res) => {
   // functionality to display weather or not user is logged in for header
   const data = auth.isLoggedIn(req, res);
   // gets news articles to display news articles on homepage
-  const articles = await api.newsAPI();
-  // console.log(articles[0].provider[0].image.thumbnail.contentUrl)
+  const articlesData = await api.newsAPI();
+  // gets articles data with images
+  let articles = [];
+  articlesData.forEach( article => {
+    if (article.provider[0].image === 'undefined') {
+      articles.push('no image')
+    } 
+
+    if (article.provider[0].image) {
+      articles.push(article)
+    } 
+  })
   // get latests posts to display on homepage
   const posts = await Post.find().sort({createdAt: -1}).limit(6);
 
@@ -31,7 +40,7 @@ exports.aboutGET = (req, res) => {
   res.render('about', {data})
 }
 
-// GET - get about page
+// GET - get contact page
 exports.contactGET = (req, res) => {
   // functionality to display weather or not user is logged in for header
   const data = auth.isLoggedIn(req, res)
@@ -133,10 +142,8 @@ exports.profileGET = async (req,res) => {
       data = info;
     });
     const posts = await Post.find();
-    const userPosts = posts.filter(post => post.author === data.id)
+    const userPosts = posts.filter(post => post.author === data.id);
     const user = await User.findById({ _id: data.id });
-    console.log(user)
-    
     res.render('profile', {data, user, userPosts})
   };
 
@@ -144,6 +151,16 @@ exports.profileGET = async (req,res) => {
 exports.create_postGET = (req, res) => {
   const data = auth.isLoggedIn(req, res)
   res.render('create_post', {data})
+}
+
+exports.postDELETE = async (req, res) => {
+  try {
+    const deletedPost = await Post.deleteOne({ _id: req.params.id});
+    console.log(deletedPost)
+    res.redirect('/profile')
+  } catch (error) {
+    console.group(error);
+  }
 }
 
 // POST - sends data to database
@@ -211,23 +228,23 @@ exports.editGET = async (req, res) => {
 //PUT - edit individual post by id
 exports.editPUT = async (req, res) => {
     const data = auth.isLoggedIn(req, res)
-    // let imageUpload
-    // let uploadPath
-    // let newImageName
+    let imageUpload
+    let uploadPath
+    let newImageName
 
-    // if(!req.files || Object.keys(req.files).length === 0) {
-    //     console.log('no files were uploaded')
-    // } else {
-    //     imageUpload = req.files.uploadImage
-    //     newImageName = Date.now() + imageUpload.name
+    if(!req.files || Object.keys(req.files).length === 0) {
+        console.log('no files were uploaded')
+    } else {
+        imageUpload = req.files.uploadImage
+        newImageName = Date.now() + imageUpload.name
 
-    //     uploadPath = require('path').resolve('./')+'/public/uploads/' + newImageName
-    //     imageUpload.mv(uploadPath, (err) => {
-    //         if(err) {
-    //             return res.status(500).send(err)
-    //         }
-    //     })
-    // }
+        uploadPath = require('path').resolve('./')+'/public/uploads/' + newImageName
+        imageUpload.mv(uploadPath, (err) => {
+            if(err) {
+                return res.status(500).send(err)
+            }
+        })
+    }
 
     try {
       await Post.findByIdAndUpdate(req.params.id, {
