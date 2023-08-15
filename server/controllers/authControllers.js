@@ -19,83 +19,75 @@ exports.profileGET = async (req,res) => {
     const user = await User.findById({ _id: userID });
     res.render('profile', {user, userPosts})
   }
-  // const { token } = req.cookies;
-  // let data
-  // jwt.verify(token, secKey, {}, (err, info) => {
-  //   if (err) throw err;
-  //   // res.json(info);
-  //   data = info;
-  // });
-  // const posts = await Post.find();
-  // const userPosts = posts.filter(post => post.author === userID);
-  // const user = await User.findById({ _id: userID });
-  
-  // res.render('profile', { data, user, userPosts})
 };
 
 // GET - gets page to create a new post from user that is logged in
 exports.create_postGET = (req, res) => {
-const data = auth.isLoggedIn(req, res)
-res.render('create_post', {data})
-}
+  const user = req.session.user_id;
 
-exports.postDELETE = async (req, res) => {
-try {
-  const deletedPost = await Post.deleteOne({ _id: req.params.id});
-  console.log(deletedPost)
-  res.redirect('/profile')
-} catch (error) {
-  console.group(error);
-}
+  if (!user) {
+    res.redirect('/login')
+  } else {
+    res.render('create_post', {user})
+  }
+  }
+
+  exports.postDELETE = async (req, res) => {
+  try {
+    const deletedPost = await Post.deleteOne({ _id: req.params.id});
+    console.log(deletedPost)
+    res.redirect('/profile')
+  } catch (error) {
+    console.group(error);
+  }
 }
 
 // POST - sends data to database
 exports.create_postPOST = async (req, res) => {
-const data = auth.isLoggedIn(req, res)
 //  functionality to upload image to uploads folder
-let imageUpload
-let uploadPath
-let newImageName
-  if(!req.files || Object.keys(req.files).length === 0) {
-      console.log('no files were uploaded')
-  } else {
-      imageUpload = req.files.uploadImage
-      newImageName = Date.now() + imageUpload.name
+  let imageUpload
+  let uploadPath
+  let newImageName
+    if(!req.files || Object.keys(req.files).length === 0) {
+        console.log('no files were uploaded')
+    } else {
+        imageUpload = req.files.uploadImage
+        newImageName = Date.now() + imageUpload.name
 
-      uploadPath = require('path').resolve('./')+'/public/uploads/' + newImageName
-      imageUpload.mv(uploadPath, (err) => {
-          if(err) {
-              return res.status(500).send(err)
-          }
-      })
+        uploadPath = require('path').resolve('./')+'/public/uploads/' + newImageName
+        imageUpload.mv(uploadPath, (err) => {
+            if(err) {
+                return res.status(500).send(err)
+            }
+        })
+    }
+
+  try {
+    const post = await Post.create({
+      title: req.body.title,
+      body: req.body.body,
+      image: newImageName,
+      author: data.id,
+    })
+    // res.json(post)
+    res.redirect('profile')
+  } catch (error) {
+    console.log(error)
   }
-
-try {
-  const post = await Post.create({
-    title: req.body.title,
-    body: req.body.body,
-    image: newImageName,
-    author: data.id,
-  })
-  // res.json(post)
-  res.redirect('profile')
-} catch (error) {
-  console.log(error)
-}
-}
+  }
 
 //GET - get edit page for post
 exports.editGET = async (req, res) => {
-  const userID = req.session.user_id;
-  console.log(userID)
-  if (!userID) {
+  const user = req.session.user_id;
+
+  if (!user) {
     res.redirect('/login')
   } else {
     try {
       // finds post with matching id aquired from webbrowser
       const post = await Post.findOne({ _id: req.params.id});
 
-      res.render('edit_post', {data, post})
+      res.render('edit_post', { user, post})
     } catch (error) {
       console.log(error);
     }

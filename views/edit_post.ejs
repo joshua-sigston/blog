@@ -1,7 +1,7 @@
 <section class="edit_container grid">
   <a href="/profile" class="back">&larr; Back</a>
 
-  <form action="/edit_post/<%= post._id %>?_method=PUT" method="POST" class="grid">
+  <form action="/edit_post/<%= post._id %>?_method=PUT" method="POST" class="flex_column">
 
     <label for="title"><b>Title</b></label>
     <input type="text" placeholder="Post Title" name="title" value="<%= post.title %>">
@@ -9,10 +9,12 @@
     <label for="body"><b>Content</b></label>
     <textarea name="body" cols="30" rows="10"><%= post.body %></textarea>
 
-    <input type="submit" value="Update" class="update">
-    <form action="/delete_post/<%= data._id %>?_method=DELETE" method="POST">
-      <input type="submit" value="Delete" class="delete">
-    </form>
+    <div class="btns_container flex_row">
+      <input type="submit" value="Update" class="update">
+      <form action="/delete_post/<%= post._id %>?_method=DELETE" method="POST">
+        <input type="submit" value="Delete" class="delete">
+      </form>
+    </div>
 
   </form>
 </section>
