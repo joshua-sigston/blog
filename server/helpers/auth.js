@@ -18,8 +18,8 @@ function authMiddleware (req, res, next) {
   }
 }
 
-function isLoggedIn (req, res) {
-  // console.log(req.cookies.token)
+function isLoggedIn (req, res, next) {
+  
   let data;
   if (req.cookies.token) {
     const { token } = req.cookies;

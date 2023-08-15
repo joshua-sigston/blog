@@ -9,17 +9,28 @@ const auth = require('../helpers/auth')
 
 // GET - gets profile page for users that hve logged in
 exports.profileGET = async (req,res) => {
-  const { token } = req.cookies;
-  let data
-  jwt.verify(token, secKey, {}, (err, info) => {
-    if (err) throw err;
-    // res.json(info);
-    data = info;
-  });
-  const posts = await Post.find();
-  const userPosts = posts.filter(post => post.author === data.id);
-  const user = await User.findById({ _id: data.id });
-  res.render('profile', {data, user, userPosts})
+  const userID = req.session.user_id;
+  
+  if (!userID) {
+    res.redirect('/login')
+  } else {
+    const posts = await Post.find();
+    const userPosts = posts.filter(post => post.author === userID);
+    const user = await User.findById({ _id: userID });
+    res.render('profile', {user, userPosts})
+  }
+  // const { token } = req.cookies;
+  // let data
+  // jwt.verify(token, secKey, {}, (err, info) => {
+  //   if (err) throw err;
+  //   // res.json(info);
+  //   data = info;
+  // });
+  // const posts = await Post.find();
+  // const userPosts = posts.filter(post => post.author === userID);
+  // const user = await User.findById({ _id: userID });
+  
+  // res.render('profile', { data, user, userPosts})
 };
 
 // GET - gets page to create a new post from user that is logged in
@@ -73,36 +84,27 @@ try {
 }
 }
 
-// GET - individual post by id
-exports.postGET = async (req, res) => {
-const data = auth.isLoggedIn(req, res)
-try {
-  let id = req.params.id;
-  // find post within database
-  const post = await Post.findById({ _id: id });
-  //  res.json(data)
-  res.render('post', {data, post});
-} catch (error) {
-  console.log(error)
-}
-};
-
 //GET - get edit page for post
 exports.editGET = async (req, res) => {
-const data = auth.isLoggedIn(req, res)
-try {
-  // finds post with matching id aquired from webbrowser
-  const post = await Post.findOne({ _id: req.params.id});
+  const userID = req.session.user_id;
+  console.log(userID)
+  if (!userID) {
+    res.redirect('/login')
+  } else {
+    try {
+      // finds post with matching id aquired from webbrowser
+      const post = await Post.findOne({ _id: req.params.id});
 
-  res.render('edit_post', {data, post})
-} catch (error) {
-  console.log(error);
-}
+      res.render('edit_post', {data, post})
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 //PUT - edit individual post by id
 exports.editPUT = async (req, res) => {
-  const data = auth.isLoggedIn(req, res)
+  // const data = auth.isLoggedIn(req, res)
   let imageUpload
   let uploadPath
   let newImageName
@@ -120,16 +122,15 @@ exports.editPUT = async (req, res) => {
           }
       })
   }
-
-  try {
-    await Post.findByIdAndUpdate(req.params.id, {
-      title: req.body.title,
-      body: req.body.body,
-      image: null,
-      author: data.id,
-    });
-    res.redirect(`/edit_post/${req.params.id}`);
-  } catch (error) {
-    console.log(error);
-  }
+    try {
+      await Post.findByIdAndUpdate(req.params.id, {
+        title: req.body.title,
+        body: req.body.body,
+        image: null,
+        author: data.id,
+      });
+      res.redirect(`/edit_post/${req.params.id}`);
+    } catch (error) {
+      console.log(error);
+    }
 }

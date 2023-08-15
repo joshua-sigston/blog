@@ -21,9 +21,11 @@
   <h2>Latest Posts</h2>
   <div>
     <% posts.forEach(element => { %>
-      <a href="/post/<%= element._id %>">
-        <h3><%= element.title%><h3>
-      </a>
+      <div class="latest_post">
+        <a href="/post/<%= element._id %>">
+          <h3><%= element.title%><h3>
+        </a>
+      </div>
     <% }) %>
   </div>
 </section>

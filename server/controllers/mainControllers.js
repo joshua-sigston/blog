@@ -12,7 +12,7 @@ exports.homepage = async (req, res) => {
   // function to pic a method and display a method tip on homepage
   const method = tip.picMethod();
   // functionality to display weather or not user is logged in for header
-  const data = auth.isLoggedIn(req, res);
+  const user = req.session.user_id;
   // gets news articles to display news articles on homepage
   const articlesData = await api.newsAPI();
   // gets articles data with images
@@ -28,32 +28,31 @@ exports.homepage = async (req, res) => {
   })
   // get latests posts to display on homepage
   const posts = await Post.find().sort({createdAt: -1}).limit(6);
-
-  res.render('home', {data, articles, posts, method})
+  res.render('home', {user, articles, posts, method})
 };
 
 // GET - get about page
 exports.aboutGET = (req, res) => {
   // functionality to display weather or not user is logged in for header
-  const data = auth.isLoggedIn(req, res)
+  const user = req.session.user_id;
 
-  res.render('about', {data})
+  res.render('about', { user })
 }
 
 // GET - get contact page
 exports.contactGET = (req, res) => {
   // functionality to display weather or not user is logged in for header
-  const data = auth.isLoggedIn(req, res)
+  const user = req.session.user_id;
 
-  res.render('contact', {data})
+  res.render('contact', { user })
 }
 
 // GET - get register page
 exports.registerGET = (req, res) => {
   // functionality to display weather or not user is logged in for header
-  const data = auth.isLoggedIn(req, res)
+  const user = req.session.user_id;
 
-  res.render('register', {data})
+  res.render('register', { user })
 };
 
 // POST - post data from register page to database
@@ -99,13 +98,14 @@ exports.registerPOST = async (req,res)=> {
 // GET - get login page
 exports.loginGET = (req, res) => {
    // functionality to display weather or not user is logged in for header
-  const data = auth.isLoggedIn(req, res);
+   const user = req.session.user_id;
 
-  res.render('login', {data});
+  res.render('login', { user });
 }
 
 // POST - data from login page to database in order to compare user sign in with user data
 exports.loginPOST = async (req,res) => {
+  
   // functionality to find user from database and compare passwords
   try {
     const {username, password} = req.body;
@@ -116,9 +116,11 @@ exports.loginPOST = async (req,res) => {
       if (err) throw err
       // create token to track user log in while navigating site
       res.cookie('token', token, { httpOnly: true});
+
+      req.session.user_id = user._id;
+
       res.redirect('profile');
     }): res.status(400).json('wrong credentials')
-
   } catch (error) {
     res.status(500).json(error); 
   }
@@ -128,6 +130,22 @@ exports.loginPOST = async (req,res) => {
 exports.logoutGET = (req, res) => {
   // clears token on logout
   res.clearCookie('token');
+  req.session.user_id = undefined;
   // res.json({ message: 'Logout Successsful'});
   res.redirect('/');
 }
+
+// GET - individual post by id
+exports.postGET = async (req, res) => {
+  const user = req.session.user_id;
+  try {
+    let id = req.params.id;
+    // find post within database
+    const post = await Post.findById({ _id: id });
+    const user = await User.findById({_id: post.author});
+    //  res.json(data)
+    res.render('post', {user, post, user});
+  } catch (error) {
+    console.log(error)
+  }
+  };

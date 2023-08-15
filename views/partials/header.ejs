@@ -9,7 +9,7 @@
   </div>
   <nav class="nav_mobile flex_column" id="nav-mobile">
     <ul>
-      <% if (!data) { %>
+      <% if (!user) { %>
         <div class="links_container flex_column">
           <a href="/register">Register</a>
           <a href="/login">Login</a>
@@ -29,7 +29,7 @@
 
   <nav class="nav_desktop flex_row">
     <ul class="flex_row">
-      <% if (!data) { %>
+      <% if (!user) { %>
           <a href="/register">Register</a>
           <a href="/login">Login</a>
       <% }  else { %>

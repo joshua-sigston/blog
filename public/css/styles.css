@@ -183,9 +183,9 @@ header {
   position: fixed;
   right: 3%;
   top: .5em;
-  width: 4rem;
-  height: 5rem;
-  background-color: rgba(212, 203, 229, .4);
+  width: 3rem;
+  height: 4rem;
+  background-color: rgba(97, 97, 117, 0.2);
   border-radius: .5rem;
   gap: .5em;
   flex-direction: column;
@@ -207,10 +207,14 @@ header {
 }
 
 .patty_slide {
-  width: 3rem;
+  width: 2.5rem;
   border-radius: .3rem;
   height: .4rem;
   background-color: var(--clr-blue);
+}
+
+.nav_mobile a {
+  color: var(--clr-white-three);
 }
 
 .nav_desktop {
@@ -292,6 +296,26 @@ header {
   flex-direction: row-reverse;
 }
 
+/* home - latest posts section */
+.latest_post {
+  padding: .5em 1em;
+  cursor: pointer;
+  transition: var(--transition-two);
+}
+
+.latest_post:nth-child(odd):hover {
+  background-color: var(--clr-blue);
+}
+
+.latest_post:nth-child(even) {
+  text-align: right;
+  background-color: var(--clr-red);
+}
+
+.latest_post:nth-child(even):hover {
+  background-color: var(--clr-white-one);
+}
+
 
 /* home - method section */
 .todays_method {
@@ -300,6 +324,7 @@ header {
   align-items: center;
   background-image: url('../img//MacBook\ Pro\ 14_\ -\ 2.png');
 }
+
 .todays_method, footer {
   text-align: center;
 }
@@ -331,7 +356,7 @@ footer {
 .register, 
 .login,
 .create,
-.edit_container {
+.edit_container  {
   min-height: 90vh;
   justify-items: center;
 }
@@ -466,6 +491,15 @@ form button:active,
 /* create page */
 .back {
   justify-self: flex-start;
+}
+
+/* post page */
+.blog {
+  min-height: 90vh;
+  margin-inline: auto;
+  gap: 1em;
+  place-content: center;
+  max-width: 30rem;
 }
 
 @media screen and (min-width: 600px) {

@@ -11,13 +11,13 @@ router.post('/register', mainControllers.registerPOST);
 router.get('/login', mainControllers.loginGET);
 router.post('/login', mainControllers.loginPOST);
 router.get('/logout', mainControllers.logoutGET);
+router.get('/post/:id', mainControllers.postGET);
 router.get('/about', mainControllers.aboutGET);
 router.get('/contact', mainControllers.contactGET);
 
 router.get('/profile', authControllers.profileGET);
 router.get('/create_post', authControllers.create_postGET);
 router.post('/create_post', authControllers.create_postPOST);
-router.get('/post/:id', authControllers.postGET);
 router.get('/edit_post/:id', authControllers.editGET);
 router.put('/edit_post/:id', authControllers.editPUT);
 router.delete('/delete_post/:id', authControllers.postDELETE);
