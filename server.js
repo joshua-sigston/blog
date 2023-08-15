@@ -6,7 +6,9 @@ const session = require('express-session');
 const cookieParser =require('cookie-parser');
 const methodOverride = require('method-override');
 const fileUpload = require('express-fileupload');
+const severless = require('serverless-http');
 
+const router = express.Router();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
+
 app.use(session({
   secret: 'keyboard cate',
   resave: false,
@@ -38,6 +41,10 @@ app.set('layout', './layouts/main');
 app.use('/', require('./server/routes/main'));
 // app.use('/', require('./server/routes/admin'))
 
+app.use('/.netlify/functions/server', router);
+
 app.listen(PORT, () => {
   console.log(`app is listening on port ${PORT}`);
 });
+
+module.exports.handler = severless(app);
